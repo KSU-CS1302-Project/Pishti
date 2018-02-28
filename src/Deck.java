@@ -5,7 +5,7 @@ import java.util.Collections;
 
 public class Deck extends ImageView {
 	
-	//contains deck array
+	//contains deck array .
     public Deck()
     {
         buildDeck();
