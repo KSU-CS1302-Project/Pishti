@@ -6,11 +6,23 @@ public class Deck {
 	//contains deck array
     public Deck()
     {
+        buildDeck();
     }
 
     public Deck(ArrayList<Card> cards)
     {
         m_cards = cards;
+    }
+
+    private void buildDeck()
+    {
+        for (Suit suit : Suit.values()) {
+            for (Rank rank : Rank.values()) {
+                Card card = new Card(suit, rank);
+                m_cards.add(card);
+            }
+        }
+        shuffle();
     }
 
     public void shuffle()
