@@ -9,10 +9,9 @@ public class Game extends Application
     @Override
     public void start(Stage primaryStage)
     {
-        Card card = new Card(Suit.HEART, Rank.TEN);
-        Group root = new Group(card);
+        GameBoard board = new GameBoard();
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(board, 800, 600);
 
         primaryStage.setTitle("PISHTI");
         primaryStage.setScene(scene);
