@@ -1,12 +1,16 @@
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck {
+public class Deck extends ImageView {
 	
 	//contains deck array
     public Deck()
     {
         buildDeck();
+        Image texture = new Image("back.png", 167, 242, false, false);
+        setImage(texture);
     }
 
     public Deck(ArrayList<Card> cards)
@@ -16,6 +20,7 @@ public class Deck {
 
     private void buildDeck()
     {
+        m_cards = new ArrayList<Card>();
         for (Suit suit : Suit.values()) {
             for (Rank rank : Rank.values()) {
                 Card card = new Card(suit, rank);
@@ -47,5 +52,4 @@ public class Deck {
     }
 
     private ArrayList<Card> m_cards;
-
 }
