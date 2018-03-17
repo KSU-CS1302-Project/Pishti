@@ -1,3 +1,5 @@
+package Cards;
+
 public enum Rank
 {
     ACE,

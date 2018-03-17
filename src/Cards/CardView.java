@@ -1,16 +1,24 @@
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
+package Cards;
 
-public class Card extends ImageView
+import Cards.Card;
+import Cards.Rank;
+import Cards.Suit;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+
+public class CardView extends ImageView
 {
-    public Card()
+    public CardView()
     {
 
     }
 
-    public Card(Suit suit, Rank rank)
+    public CardView(Card card)
     {
-        m_texture = getImageForEnum(suit, rank);
+        m_card = card;
+        m_texture = getImageForEnum(card.getSuit(), card.getRank());
         setImage(m_texture);
     }
 
@@ -52,5 +60,6 @@ public class Card extends ImageView
         return "NA";
     }
 
+    public Card m_card;
     private Image m_texture;
 }
