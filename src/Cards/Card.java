@@ -1,3 +1,5 @@
+package Cards;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
@@ -5,11 +7,12 @@ public class Card extends ImageView
 {
     public Card()
     {
-
     }
 
     public Card(Suit suit, Rank rank)
     {
+        m_suit = suit;
+        m_rank = rank;
         m_texture = getImageForEnum(suit, rank);
         setImage(m_texture);
     }
@@ -52,5 +55,10 @@ public class Card extends ImageView
         return "NA";
     }
 
+    public Suit getSuit() {return m_suit;}
+    public Rank getRank() {return m_rank;}
+
+    private Suit m_suit;
+    private Rank m_rank;
     private Image m_texture;
 }
