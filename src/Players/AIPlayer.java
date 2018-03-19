@@ -1,7 +1,6 @@
 package Players;
 
 import Cards.Card;
-import Cards.CardView;
 
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public class AIPlayer extends Player
     public void cardPlayedByOpponent(Card playedCard)
     {
         // needs logic
-        Card cardToPlay = ((CardView) getCardList().get(0)).m_card;
+        Card cardToPlay = ((Card) getCardList().get(0));
         System.out.println("AIPlayer.playCard called");
         playCard(cardToPlay);
     }

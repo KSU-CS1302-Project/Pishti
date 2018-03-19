@@ -1,8 +1,6 @@
 package Players;
 
 import Cards.Card;
-import Cards.CardView;
-import Players.Player;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -43,10 +41,10 @@ public class HumanPlayer extends Player
         HBox hbox = (HBox) getChildren().get(0);
         Point2D hBoxPos = hbox.parentToLocal(x, y);
         for (Node n : hbox.getChildren()) {
-            CardView cv = (CardView) n;
+            Card cv = (Card) n;
             Point2D cardPos = cv.parentToLocal(hBoxPos);
             if (cv.contains(cardPos)) {
-                return cv.m_card;
+                return cv;
             }
         }
         return new Card();

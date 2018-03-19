@@ -3,9 +3,6 @@ package Players;
 import ActionHandlers.Action;
 import ActionHandlers.ActionSubject;
 import Cards.Card;
-import Cards.CardView;
-import Cards.Rank;
-import Cards.Suit;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -33,10 +30,10 @@ public abstract class Player extends Group
         // remove from observableChildren list (Group)
         ObservableList<Node> list = getCardList();
         System.out.println("RemoveCard called");
-        CardView one = new CardView();
+        Card one = new Card();
         for (Node n : list) {
-            CardView child = (CardView) n;
-            if (child.m_card == card) {
+            Card child = (Card) n;
+            if (child == card) {
                 one = child;
             }
         }
@@ -50,8 +47,9 @@ public abstract class Player extends Group
     {
         assert(hand.size() <= 4): "Players can only have up to 4 cards in their hand";
         m_cards = hand;
-        HBox h = new HBox(new CardView(m_cards.get(0)), new CardView(m_cards.get(1)),
-                new CardView(m_cards.get(2)), new CardView(m_cards.get(3)));
+        HBox h = new HBox(m_cards.get(0), m_cards.get(1), m_cards.get(2), m_cards.get(3));
+
+        // for debugging, show border around Player in Scene
         h.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
         getChildren().add(h);
 
