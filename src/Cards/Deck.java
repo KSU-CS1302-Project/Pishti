@@ -49,6 +49,11 @@ public class Deck extends ImageView {
         m_cards.remove(card);
     }
 
+    public int remainingCards()
+    {
+        return m_cards.size();
+    }
+
     public Card draw()
     {
         Card drawnCard =  m_cards.get(m_cards.size() - 1);

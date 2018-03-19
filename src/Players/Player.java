@@ -6,7 +6,14 @@ import Cards.Card;
 import Cards.CardView;
 import Cards.Rank;
 import Cards.Suit;
+import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderStroke;
+import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.layout.HBox;
+import javafx.scene.paint.Paint;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -18,24 +25,40 @@ public abstract class Player extends Group
     {
         m_subject = new ActionSubject();
         m_queuedCards = new ArrayDeque<>();
-        getChildren().addAll(new CardView(new Card(Suit.DIAMOND, Rank.EIGHT)));
     }
 
     // search through children and remove Cards.Card node passed as argument.
     public void removeCard(Card card)
     {
-        //TODO remove from observable children list in Group first
+        // remove from observableChildren list (Group)
+        ObservableList<Node> list = getCardList();
+        System.out.println("RemoveCard called");
+        CardView one = new CardView();
+        for (Node n : list) {
+            CardView child = (CardView) n;
+            if (child.m_card == card) {
+                one = child;
+            }
+        }
+        list.remove(one);
+
+        // remove from Player list of Card representations
         m_cards.remove(card);
     }
 
     public void dealHand(ArrayList<Card> hand)
     {
-        assert(hand.size() == 4): "Players can only have 4 cards in their hand";
+        assert(hand.size() <= 4): "Players can only have up to 4 cards in their hand";
         m_cards = hand;
+        HBox h = new HBox(new CardView(m_cards.get(0)), new CardView(m_cards.get(1)),
+                new CardView(m_cards.get(2)), new CardView(m_cards.get(3)));
+        h.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
+        getChildren().add(h);
+
     }
 
     // what this method does will differ between the Players.HumanPlayer and AI. Thus, it is abstract.
-    public abstract void cardPlayedByOpponentEvent(Card card);
+    public abstract void cardPlayedByOpponent(Card playedCard);
 
     // this must be here, in one method, because both the card must be queued and the notification sent, together
     protected final void playCard(Card card)
@@ -54,6 +77,12 @@ public abstract class Player extends Group
     protected void addQueuedCard(Card card)
     {
         m_queuedCards.add(card);
+    }
+
+    protected final ObservableList<Node> getCardList()
+    {
+        HBox cardContainer = (HBox) getChildren().get(0);
+        return cardContainer.getChildren();
     }
 
     private Queue<Card> m_queuedCards; //!< keeps track of cards that the player "wants" to play

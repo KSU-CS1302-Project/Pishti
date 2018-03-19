@@ -1,9 +1,13 @@
 package Players;
 
 import Cards.Card;
+import Cards.CardView;
 import Players.Player;
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 
 public class HumanPlayer extends Player
 {
@@ -28,14 +32,23 @@ public class HumanPlayer extends Player
     }
 
     @Override
-    public void cardPlayedByOpponentEvent(Card card)
+    public void cardPlayedByOpponent(Card playedCard)
     {
         return;
-    }
+    } // does nothing.  To notify human player, just show GameBoard changes
 
     private Card getCardAtPos(double x, double y)
     {
         // search ObservableChildren nodes (cards) in Players.Player class and return the one at the clicked position.
+        HBox hbox = (HBox) getChildren().get(0);
+        Point2D hBoxPos = hbox.parentToLocal(x, y);
+        for (Node n : hbox.getChildren()) {
+            CardView cv = (CardView) n;
+            Point2D cardPos = cv.parentToLocal(hBoxPos);
+            if (cv.contains(cardPos)) {
+                return cv.m_card;
+            }
+        }
         return new Card();
     }
 }
