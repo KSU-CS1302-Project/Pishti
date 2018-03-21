@@ -52,6 +52,7 @@ public abstract class Player extends Group
         // for debugging, show border around Player in Scene
         h.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
         getChildren().add(h);
+        h.setMinHeight(m_cards.get(0).getBoundsInLocal().getHeight());
 
     }
 

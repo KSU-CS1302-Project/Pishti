@@ -1,10 +1,7 @@
 package Players;
 
 import Cards.Card;
-import javafx.application.Platform;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 
 import java.util.ArrayList;
 
@@ -18,7 +15,7 @@ public class AIPlayer extends Player
                 Card cardToPlay;
                 System.out.println("In Task");
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

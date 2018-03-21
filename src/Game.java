@@ -11,7 +11,7 @@ public class Game extends Application
     {
         GameBoard board = new GameBoard();
 
-        Scene scene = new Scene(board, 800, 600);
+        Scene scene = new Scene(board);
 
         primaryStage.setTitle("PISHTI");
         primaryStage.setScene(scene);
