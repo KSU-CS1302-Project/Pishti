@@ -7,6 +7,10 @@ import java.util.ArrayList;
 
 public class AIPlayer extends Player
 {
+    /*
+    When this method is called by GameBoard, notifying the AIPlayer that a card has been played by an opponent,
+    it starts the asynchronous task of selecting a card to play.
+     */
     @Override
     public void cardPlayedByOpponent(Card playedCard)
     {
@@ -14,11 +18,6 @@ public class AIPlayer extends Player
             @Override protected Card call() throws Exception {
                 Card cardToPlay;
                 System.out.println("In Task");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
                 cardToPlay = getCardToPlay();
                 return cardToPlay;
             }
@@ -33,6 +32,11 @@ public class AIPlayer extends Player
 
     private Card getCardToPlay()
     {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // for now just return the first card in the list
         return ((Card) getCardList().get(0));
     }
