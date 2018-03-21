@@ -6,6 +6,8 @@ import Cards.Pile;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayDeque;
@@ -48,6 +50,7 @@ public class GameBoard extends BorderPane implements ActionObserver
         } else {
             setTop((Player)((m_playerQueue.toArray())[1]));
             setLeft(m_deck);
+            setRight(m_pile);
         }
 
         // setup ActionNotifications between players and GameBoard
@@ -82,6 +85,7 @@ public class GameBoard extends BorderPane implements ActionObserver
         }
 
         //TODO add to pile, check for possible award of points, and continue play (if cards left in deck)
+        m_pile.addCard(card);
         /*
         PointManager class:
             Based on current value of Pile (only top card matters?),

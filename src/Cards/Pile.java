@@ -1,9 +1,11 @@
 package Cards;
 
+import javafx.scene.image.ImageView;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Pile
+public class Pile extends ImageView
 {
     public Pile()
     {
@@ -13,6 +15,7 @@ public class Pile
     public void addCard(Card card)
     {
         m_cards.push(card);
+        setImage(card.m_texture);
     }
 
     public Card getTopCard()

@@ -60,5 +60,5 @@ public class Card extends ImageView
 
     private Suit m_suit;
     private Rank m_rank;
-    private Image m_texture;
+    public Image m_texture;
 }

@@ -77,7 +77,7 @@ public abstract class Player extends Group
         m_queuedCards.add(card);
     }
 
-    protected final ObservableList<Node> getCardList()
+    public final ObservableList<Node> getCardList()
     {
         HBox cardContainer = (HBox) getChildren().get(0);
         return cardContainer.getChildren();

@@ -1,8 +1,5 @@
 package Cards;
 
-import Cards.Card;
-import Cards.Rank;
-import Cards.Suit;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ public class Deck extends ImageView {
     public Deck()
     {
         buildDeck();
-        Image texture = new Image("red_joker.png", 167, 242, false, false); //texture stand-in
+        Image texture = new Image("back.png", 167, 242, false, false); //texture stand-in
         setImage(texture);
     }
 

@@ -25,6 +25,7 @@ public class HumanPlayer extends Player
                 double y = e.getY();
                 Card clickedCard = getCardAtPos(x, y);
                 playCard(clickedCard);
+                System.out.println("LEAVING MOUSECLICKEVENT");
             }
         });
     }
