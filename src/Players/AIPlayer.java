@@ -32,11 +32,11 @@ public class AIPlayer extends Player
 
     private Card getCardToPlay()
     {
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // for now just return the first card in the list
         return ((Card) getCardList().get(0));
     }
