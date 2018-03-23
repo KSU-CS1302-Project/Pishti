@@ -116,8 +116,6 @@ public class GameBoard extends BorderPane implements ActionObserver
                 m_playerQueue.remove(); // remove player who just played card from front of queue...
                 m_playerQueue.add(player); // and add back at end of queue
                 cardPlayed(player, player.getNextQueuedCard());
-            } else { // handle: player tried to play card out of turn
-
             }
         }
     }

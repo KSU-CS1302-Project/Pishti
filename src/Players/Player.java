@@ -64,7 +64,8 @@ public abstract class Player extends Group
     // this must be here, in one method, because both the card must be queued and the notification sent, together
     protected final void playCard(Card card)
     {
-        addQueuedCard(card);
+        if (!m_queuedCards.contains(card))
+            addQueuedCard(card);
         m_subject.sendActionNotification(this, Action.CARDPLAYED);
     }
 
