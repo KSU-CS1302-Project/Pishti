@@ -64,9 +64,10 @@ public class GameBoard extends BorderPane implements ActionObserver
     // gives each player an ArrayList containing 4 cards.
     private void dealCards()
     {
+        int remainingCards = m_deck.remainingCards();
         for (Player player : m_playerQueue) {
             ArrayList<Card> playerHand = new ArrayList<>();
-            for (int i = 0; i < 4; ++i) {
+            for (int i = 0; i < Math.min(4, remainingCards / 2); ++i) {
                 Card card = m_deck.draw();
                 playerHand.add(card);
             }
@@ -92,6 +93,15 @@ public class GameBoard extends BorderPane implements ActionObserver
             give point to player who played 'capturing' card.
          */
 
+        boolean allPlayerHandsEmpty = true;
+        for (Player player : m_playerQueue) {
+            if (!player.getCardList().isEmpty()) {
+                allPlayerHandsEmpty = false;
+            }
+        }
+        if (allPlayerHandsEmpty) {
+            dealCards();
+        }
 
     }
 

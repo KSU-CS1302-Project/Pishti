@@ -22,6 +22,12 @@ public abstract class Player extends Group
     {
         m_subject = new ActionSubject();
         m_queuedCards = new ArrayDeque<>();
+
+        // for debugging, show border around Player in Scene
+        HBox cardParent = new HBox();
+        cardParent.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
+        getChildren().add(cardParent);
+        cardParent.setMinHeight(242.0); //set minimum height to height of card images. Change later from hardcoded value
     }
 
     // search through children and remove Cards.Card node passed as argument.
@@ -47,13 +53,9 @@ public abstract class Player extends Group
     {
         assert(hand.size() <= 4): "Players can only have up to 4 cards in their hand";
         m_cards = hand;
-        HBox h = new HBox(m_cards.get(0), m_cards.get(1), m_cards.get(2), m_cards.get(3));
-
-        // for debugging, show border around Player in Scene
-        h.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
-        getChildren().add(h);
-        h.setMinHeight(m_cards.get(0).getBoundsInLocal().getHeight());
-
+        for (Card card : hand) {
+            getCardList().add(card);
+        }
     }
 
     // what this method does will differ between the Players.HumanPlayer and AI. Thus, it is abstract.
