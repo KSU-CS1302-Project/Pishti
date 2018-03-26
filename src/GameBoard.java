@@ -6,7 +6,11 @@ import Cards.Pile;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
+import javafx.animation.PathTransition;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.shape.Line;
+import javafx.scene.shape.Path;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Queue;
@@ -79,6 +83,18 @@ public class GameBoard extends BorderPane implements ActionObserver
         for (Player player : m_playerQueue) {
             if (player != playerOfCard) {
                 player.cardPlayedByOpponent(card);
+                Line animate = new Line();
+                animate.startXProperty().bind(card.xProperty());
+                animate.startYProperty().bind(card.yProperty());
+                animate.endXProperty().bind(m_pile.xProperty());
+                animate.endYProperty().bind(m_pile.yProperty());
+                
+                PathTransition pathTransition = new PathTransition();
+                pathTransition.setPath(animate);
+                pathTransition.setDuration(Duration.millis(1000));
+                pathTransition.setNode(card);
+                pathTransition.play();
+                
             }
         }
 
