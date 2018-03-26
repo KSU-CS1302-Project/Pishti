@@ -6,11 +6,8 @@ import Cards.Pile;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
-import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
