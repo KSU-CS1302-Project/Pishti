@@ -85,7 +85,7 @@ public class GameBoard extends StackPane implements ActionObserver
     private void cardPlayed(Player playerOfCard, Card card)
     {
         Line animate = new Line();
-        animate.setStroke(Color.TRANSPARENT);
+        //animate.setStroke(Color.TRANSPARENT);
         Card animatedCard = new Card(card);
         m_animationLayer.getChildren().addAll(animate, animatedCard);
         Bounds cardBounds = getBoundsInAnimationLayer(card);
@@ -98,6 +98,7 @@ public class GameBoard extends StackPane implements ActionObserver
         animate.setStartY(cardBounds.getMinY() + yOriginToCenter);
         animate.setEndX(pileBounds.getMinX() - xOriginToCenter);
         animate.setEndY(pileBounds.getMinY() + yOriginToCenter);
+        System.out.println(cardBounds.getMinX());
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
