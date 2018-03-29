@@ -85,8 +85,8 @@ public class GameBoard extends StackPane implements ActionObserver
         Line animate = new Line();
         Card animatedCard = new Card(card);
         m_animationLayer.getChildren().addAll(animate, animatedCard);
-        Bounds cardBounds = card.localToScene(card.getBoundsInLocal());
-        Bounds pileBounds = m_pile.localToScene(m_pile.getBoundsInLocal());
+        Bounds cardBounds = m_animationLayer.parentToLocal(this.parentToLocal( card.localToScene(card.getBoundsInLocal()) ));
+        Bounds pileBounds = m_animationLayer.parentToLocal(this.parentToLocal( m_pile.localToScene(m_pile.getBoundsInLocal()) ));
         animate.setStartX(cardBounds.getMinX());
         animate.setStartY(cardBounds.getMinY());
         animate.setEndX(pileBounds.getMinX());
