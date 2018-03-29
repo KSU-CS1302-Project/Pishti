@@ -8,6 +8,8 @@ import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.PathTransition;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
@@ -16,14 +18,14 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class GameBoard extends BorderPane implements ActionObserver
+public class GameBoard extends StackPane implements ActionObserver
 {
     public GameBoard() {
+        m_layout = new BorderPane();
+        m_animationLayer = new Pane();
+        m_animationLayer.setPickOnBounds(false);
+        getChildren().addAll(m_layout, m_animationLayer);
         setup(2);
-    }
-
-    public GameBoard(int numberOfPlayers) {
-        setup(numberOfPlayers);
     }
 
     private void setup(int numberOfPlayers)
@@ -41,17 +43,17 @@ public class GameBoard extends BorderPane implements ActionObserver
         }
 
         // setup visual layout of GameBoard based on number of players
-        setBottom(m_humanPlayer);
+        m_layout.setBottom(m_humanPlayer);
         if (numberOfPlayers == 4) {
             Object[] tempArr = m_playerQueue.toArray();
-            setRight((Player)(tempArr[1]));
-            setTop((Player)(tempArr[2]));
-            setLeft((Player)(tempArr[3]));
-            setCenter(m_deck);
+            m_layout.setRight((Player)(tempArr[1]));
+            m_layout.setTop((Player)(tempArr[2]));
+            m_layout.setLeft((Player)(tempArr[3]));
+            m_layout.setCenter(m_deck);
         } else {
-            setTop((Player)((m_playerQueue.toArray())[1]));
-            setLeft(m_deck);
-            setRight(m_pile);
+            m_layout.setTop((Player)((m_playerQueue.toArray())[1]));
+            m_layout.setLeft(m_deck);
+            m_layout.setRight(m_pile);
         }
 
         // setup ActionNotifications between players and GameBoard
@@ -137,4 +139,6 @@ public class GameBoard extends BorderPane implements ActionObserver
     private Queue<Player> m_playerQueue; // holds players - In queue to track and enforce turn order.
     private Deck m_deck;
     private Pile m_pile;
+    BorderPane m_layout;
+    Pane m_animationLayer;
 }
