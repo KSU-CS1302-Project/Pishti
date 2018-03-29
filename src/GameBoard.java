@@ -7,6 +7,7 @@ import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.PathTransition;
+import javafx.geometry.Bounds;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -81,24 +82,30 @@ public class GameBoard extends StackPane implements ActionObserver
     // card was played.  remove it from the hand of the player that played it, and notify other players.
     private void cardPlayed(Player playerOfCard, Card card)
     {
-        playerOfCard.removeCard(card);
-        for (Player player : m_playerQueue) {
-            if (player != playerOfCard) {
-                player.cardPlayedByOpponent(card);
-                Line animate = new Line();
-                animate.startXProperty().bind(card.xProperty());
-                animate.startYProperty().bind(card.yProperty());
-                animate.endXProperty().bind(m_pile.xProperty());
-                animate.endYProperty().bind(m_pile.yProperty());
-                
-                PathTransition pathTransition = new PathTransition();
-                pathTransition.setPath(animate);
-                pathTransition.setDuration(Duration.millis(1000));
-                pathTransition.setNode(card);
-                pathTransition.play();
-                
+        Line animate = new Line();
+        Card animatedCard = new Card(card);
+        m_animationLayer.getChildren().addAll(animate, animatedCard);
+        Bounds cardBounds = card.localToScene(card.getBoundsInLocal());
+        Bounds pileBounds = m_pile.localToScene(m_pile.getBoundsInLocal());
+        animate.setStartX(cardBounds.getMinX());
+        animate.setStartY(cardBounds.getMinY());
+        animate.setEndX(pileBounds.getMinX());
+        animate.setEndY(pileBounds.getMinY());
+
+        PathTransition pathTransition = new PathTransition();
+        pathTransition.setPath(animate);
+        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setNode(card);
+        pathTransition.play();
+
+        pathTransition.setOnFinished(e -> {
+            for (Player player : m_playerQueue) {
+                if (player != playerOfCard) {
+                    player.cardPlayedByOpponent(card);
+                }
             }
-        }
+            playerOfCard.removeCard(card);
+        });
 
         //TODO add to pile, check for possible award of points, and continue play (if cards left in deck)
         m_pile.addCard(card);

@@ -17,6 +17,14 @@ public class Card extends ImageView
         setImage(m_texture);
     }
 
+    public Card(Card copiedCard)
+    {
+        m_suit = copiedCard.getSuit();
+        m_rank = copiedCard.getRank();
+        m_texture = getImageForEnum(m_suit, m_rank);
+        setImage(m_texture);
+    }
+
     private Image getImageForEnum(Suit suit, Rank rank)
     {
         String imageFileName = getRankFileName(rank) + "_of_" +
