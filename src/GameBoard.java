@@ -90,44 +90,52 @@ public class GameBoard extends StackPane implements ActionObserver
         m_animationLayer.getChildren().addAll(animate, animatedCard);
         Bounds cardBounds = getBoundsInAnimationLayer(card);
         Bounds pileBounds = getBoundsInAnimationLayer(m_pile);
-        animate.setStartX(cardBounds.getMinX());
-        animate.setStartY(cardBounds.getMinY());
-        animate.setEndX(pileBounds.getMinX());
-        animate.setEndY(pileBounds.getMinY());
+
+        double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
+        double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
+
+        animate.setStartX(cardBounds.getMinX() + xOriginToCenter);
+        animate.setStartY(cardBounds.getMinY() + yOriginToCenter);
+        animate.setEndX(pileBounds.getMinX() - xOriginToCenter);
+        animate.setEndY(pileBounds.getMinY() + yOriginToCenter);
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
         pathTransition.setDuration(Duration.millis(3500));
         pathTransition.setNode(animatedCard);
+        card.setVisible(false);
         pathTransition.play();
 
         pathTransition.setOnFinished(e -> {
+            // finish animation processing
+            animatedCard.setVisible(false);
+
+            // continue
             for (Player player : m_playerQueue) {
                 if (player != playerOfCard) {
                     player.cardPlayedByOpponent(card);
                 }
             }
             playerOfCard.removeCard(card);
-        });
 
-        //TODO add to pile, check for possible award of points, and continue play (if cards left in deck)
-        m_pile.addCard(card);
-        /*
-        PointManager class:
-            Based on current value of Pile (only top card matters?),
-            give point to player who played 'capturing' card.
-         */
+            //TODO add to pile, check for possible award of points, and continue play (if cards left in deck)
+            m_pile.addCard(card);
+            /*
+            PointManager class:
+                Based on current value of Pile (only top card matters?),
+                give point to player who played 'capturing' card.
+            */
 
-        boolean allPlayerHandsEmpty = true;
-        for (Player player : m_playerQueue) {
-            if (!player.getCardList().isEmpty()) {
-                allPlayerHandsEmpty = false;
+            boolean allPlayerHandsEmpty = true;
+            for (Player player : m_playerQueue) {
+                if (!player.getCardList().isEmpty()) {
+                    allPlayerHandsEmpty = false;
+                }
             }
-        }
-        if (allPlayerHandsEmpty) {
-            dealCards();
-        }
-
+            if (allPlayerHandsEmpty) {
+                dealCards();
+            }
+        });
     }
 
     private Bounds getBoundsInAnimationLayer(Node node) {
