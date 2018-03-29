@@ -96,8 +96,9 @@ public class GameBoard extends StackPane implements ActionObserver
 
         animate.setStartX(cardBounds.getMinX() + xOriginToCenter);
         animate.setStartY(cardBounds.getMinY() + yOriginToCenter);
-        animate.setEndX(pileBounds.getMinX() - xOriginToCenter);
+        animate.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
         animate.setEndY(pileBounds.getMinY() + yOriginToCenter);
+        System.out.println("Pile width: " + m_pile.getBoundsInLocal().getWidth());
         System.out.println("DISTANCE: " + (pileBounds.getMinX() - cardBounds.getMinX()));
 
         PathTransition pathTransition = new PathTransition();
