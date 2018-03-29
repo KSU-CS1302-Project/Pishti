@@ -8,9 +8,11 @@ import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.PathTransition;
 import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
@@ -83,10 +85,11 @@ public class GameBoard extends StackPane implements ActionObserver
     private void cardPlayed(Player playerOfCard, Card card)
     {
         Line animate = new Line();
+        animate.setStroke(Color.TRANSPARENT);
         Card animatedCard = new Card(card);
         m_animationLayer.getChildren().addAll(animate, animatedCard);
-        Bounds cardBounds = m_animationLayer.parentToLocal(this.parentToLocal( card.localToScene(card.getBoundsInLocal()) ));
-        Bounds pileBounds = m_animationLayer.parentToLocal(this.parentToLocal( m_pile.localToScene(m_pile.getBoundsInLocal()) ));
+        Bounds cardBounds = getBoundsInAnimationLayer(card);
+        Bounds pileBounds = getBoundsInAnimationLayer(m_pile);
         animate.setStartX(cardBounds.getMinX());
         animate.setStartY(cardBounds.getMinY());
         animate.setEndX(pileBounds.getMinX());
@@ -94,7 +97,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
-        pathTransition.setDuration(Duration.millis(10000));
+        pathTransition.setDuration(Duration.millis(3500));
         pathTransition.setNode(animatedCard);
         pathTransition.play();
 
@@ -125,6 +128,14 @@ public class GameBoard extends StackPane implements ActionObserver
             dealCards();
         }
 
+    }
+
+    private Bounds getBoundsInAnimationLayer(Node node) {
+        //m_animationLayer.parentToLocal(this.parentToLocal( card.localToScene(card.getBoundsInLocal()) ));
+        Bounds sceneBounds = node.localToScene(node.getBoundsInLocal());
+        Bounds gBoardBounds = this.parentToLocal(sceneBounds);
+        Bounds animationLayerBounds = m_animationLayer.parentToLocal(gBoardBounds);
+        return animationLayerBounds;
     }
 
     @Override
