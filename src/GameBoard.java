@@ -103,7 +103,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
-        pathTransition.setDuration(Duration.millis(3500));
+        pathTransition.setDuration(Duration.millis(1500));
         pathTransition.setNode(animatedCard);
         card.setVisible(false);
         pathTransition.play();
