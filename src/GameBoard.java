@@ -9,6 +9,7 @@ import Players.Player;
 import javafx.animation.PathTransition;
 import javafx.geometry.Bounds;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -19,6 +20,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Stack;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class GameBoard extends StackPane implements ActionObserver
@@ -85,7 +87,7 @@ public class GameBoard extends StackPane implements ActionObserver
     private void cardPlayed(Player playerOfCard, Card card)
     {
         Line animate = new Line();
-        //animate.setStroke(Color.TRANSPARENT);
+        animate.setStroke(Color.TRANSPARENT);
         Card animatedCard = new Card(card);
         m_animationLayer.getChildren().addAll(animate, animatedCard);
         Bounds cardBounds = getBoundsInAnimationLayer(card);
@@ -141,9 +143,21 @@ public class GameBoard extends StackPane implements ActionObserver
     }
 
     private Bounds getBoundsInAnimationLayer(Node node) {
-        //m_animationLayer.parentToLocal(this.parentToLocal( card.localToScene(card.getBoundsInLocal()) ));
         Bounds sceneBounds = node.localToScene(node.getBoundsInLocal());
-        Bounds gBoardBounds = this.parentToLocal(sceneBounds);
+        int depth = 1;
+        Stack<Parent> parentStack = new Stack<>();
+        Bounds parBounds = sceneBounds;
+        parentStack.push(this.getParent());
+        if (this.getParent() != null) {
+            while (parentStack.peek() != getScene().getRoot()) {
+                depth++;
+                parentStack.push(parentStack.peek().getParent());
+            }
+            while (!parentStack.isEmpty()) {
+                parBounds = parentStack.pop().parentToLocal(parBounds);
+            }
+        }
+        Bounds gBoardBounds = this.parentToLocal(parBounds);
         Bounds animationLayerBounds = m_animationLayer.parentToLocal(gBoardBounds);
         return animationLayerBounds;
     }
@@ -155,7 +169,7 @@ public class GameBoard extends StackPane implements ActionObserver
             assert(object instanceof Player); // for ActionHandlers.Action.CARDPLAYED object should always be of type Players.Player
             Player player = (Player) object;
             Player peek = m_playerQueue.peek();
-            if (player == m_playerQueue.peek()) {
+            if (player == peek) {
                 m_playerQueue.remove(); // remove player who just played card from front of queue...
                 m_playerQueue.add(player); // and add back at end of queue
                 cardPlayed(player, player.getNextQueuedCard());
