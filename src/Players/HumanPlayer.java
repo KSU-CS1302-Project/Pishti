@@ -20,6 +20,9 @@ public class HumanPlayer extends Player
         {
             public void handle(MouseEvent e)
             {
+                if (playActive)
+                    return;
+                playActive = true;
                 System.out.println("Clicked in HumanPlayer");
                 double x = e.getX();
                 double y = e.getY();
@@ -33,7 +36,7 @@ public class HumanPlayer extends Player
     @Override
     public void cardPlayedByOpponent(Card playedCard)
     {
-        return;
+        playActive = false;
     } // does nothing.  To notify human player, just show GameBoard changes
 
     private Card getCardAtPos(double x, double y)
@@ -50,4 +53,6 @@ public class HumanPlayer extends Player
         }
         return new Card();
     }
+
+    boolean playActive = false;
 }

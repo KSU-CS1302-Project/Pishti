@@ -112,6 +112,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         pathTransition.setOnFinished(e -> {
             // finish animation processing
+            System.out.println("ANIMATION FINISHED");
             animatedCard.setVisible(false);
 
             // continue
