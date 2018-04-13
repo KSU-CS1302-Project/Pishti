@@ -115,6 +115,8 @@ public class GameBoard extends StackPane implements ActionObserver
             System.out.println("ANIMATION FINISHED");
             animatedCard.setVisible(false);
 
+            //I think here is where we would need to add in the points values for each card?
+            
             // continue
             for (Player player : m_playerQueue) {
                 if (player != playerOfCard) {

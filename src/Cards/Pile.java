@@ -28,6 +28,26 @@ public class Pile extends ImageView
         return new ArrayList<Card>(m_cards);
     }
 
+    //Would the comment below be easily adaptable to how we could get the points available in the pile?
+    /*public int points() {
+    	int point;
+    	for(int i = m_cards.length() + 1 : i > 0 : i--) {
+    		if(card.getRank() == JACK) {
+    			point ++;
+    		}
+    		else if(card.getRank() == ACE) {
+    			point ++;
+    		}
+    		else if(card.getRank() == TWO && card.getSuit() == CLUBS) {
+    			point += 2;
+    		}
+    		else if(card.getRank() == TEN && card.getSuit() == DIAMONDS) {
+    			point += 3;
+    		}
+    	}
+    	return point;
+    }*/
+    
     public void flush()
     {
         m_cards.clear();

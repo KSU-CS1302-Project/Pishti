@@ -65,6 +65,7 @@ public class Card extends ImageView
 
     public Suit getSuit() {return m_suit;}
     public Rank getRank() {return m_rank;}
+   
 
     private Suit m_suit;
     private Rank m_rank;
