@@ -15,7 +15,7 @@ public class Pile extends ImageView
     public void addCard(Card card)
     {
         m_topCard = card;
-        m_points = card.point;
+        m_points = 1;//card.point;
         setImage(card.m_texture);
     }
 

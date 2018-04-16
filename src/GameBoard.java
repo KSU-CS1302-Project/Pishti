@@ -139,8 +139,22 @@ public class GameBoard extends StackPane implements ActionObserver
                     allPlayerHandsEmpty = false;
                 }
             }
-            if (allPlayerHandsEmpty) {
-                dealCards();
+            if (allPlayerHandsEmpty) { // deal new hand
+                int playersWithWinningPoints = 0;
+                for (Player p : m_playerQueue) {
+                    if (p.capturedPoints >= 151) {
+                        ++playersWithWinningPoints;
+                    }
+                }
+                if (playersWithWinningPoints != 0)
+                    return;
+                if (m_deck.remainingCards() >=2) {
+                    dealCards();
+                } else {
+                    m_pile.flush();
+                    m_deck = new Deck();
+                    dealCards();
+                }
             }
         });
     }
