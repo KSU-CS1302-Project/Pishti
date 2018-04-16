@@ -142,6 +142,7 @@ public class GameBoard extends StackPane implements ActionObserver
                 }
             }
             playerOfCard.removeCard(card);
+            System.out.println("\n\n\t\tPlayer POINTS:\t" + playerOfCard.capturedPoints);
             /*
             PointManager class:
                 Based on current value of Pile (only top card matters?),
@@ -167,6 +168,9 @@ public class GameBoard extends StackPane implements ActionObserver
                     dealCards();
                 } else {
                     m_pile.flush();
+                    for (Player p : m_playerQueue) {
+                        p.capturedCards = 0; // reset number of cards from a given deck to 0. (for majority calculation)
+                    }
                     m_deck = new Deck();
                     dealCards();
                 }
