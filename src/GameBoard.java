@@ -3,6 +3,7 @@ import ActionHandlers.ActionObserver;
 import Cards.Card;
 import Cards.Deck;
 import Cards.Pile;
+import Cards.Rank;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
@@ -118,7 +119,21 @@ public class GameBoard extends StackPane implements ActionObserver
 
             //I think here is where we would need to add in the points values for each card?
 
-            if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
+            if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK)) {
+            	System.out.println("Jack played");
+            	m_pile.addCard(card);
+            	System.out.println("Jack added to stack");
+            	playerOfCard.capturedPoints += m_pile.getPileValue();
+            	System.out.println("Points added");
+            	if(m_pile.getNumCards() > 26) {
+            		playerOfCard.capturedPoints += 3;
+            		System.out.println("Majority of cards awarded");  		
+            	}
+            	m_pile.flush();
+            	System.out.println("Deck cleared");
+            }
+            
+            else if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
                 System.out.println("KSJFDLKJSFDLKJS:LKFDJ");
                 System.out.println("JJKJDSLKFJSLKDFJLKSDJF");
             	m_pile.addCard(card);
