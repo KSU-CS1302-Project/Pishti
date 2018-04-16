@@ -78,6 +78,11 @@ public class Card extends ImageView
         return "NA";
     }
 
+    public boolean equals(Card card)
+    {
+        return (card.m_rank == this.m_rank) && (card.m_suit == this.m_suit);
+    }
+
     public Suit getSuit() {return m_suit;}
     public Rank getRank() {return m_rank;}
     public int getPoint() {return m_point;}
