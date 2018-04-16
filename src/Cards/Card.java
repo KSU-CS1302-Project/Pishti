@@ -80,7 +80,7 @@ public class Card extends ImageView
 
     public boolean equals(Card card)
     {
-        return (card.m_rank == this.m_rank) && (card.m_suit == this.m_suit);
+        return (card.m_rank == this.m_rank);
     }
 
     public Suit getSuit() {return m_suit;}
