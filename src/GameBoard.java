@@ -118,6 +118,19 @@ public class GameBoard extends StackPane implements ActionObserver
 
             //I think here is where we would need to add in the points values for each card?
             
+            if(m_pile.getTopCard() == card) {
+            	m_pile.addCard(card);
+            	playerOfCard.capturedPoints += m_pile.getPileValue();
+            	if(m_pile.getNumCards() > 26) {
+            		playerOfCard.capturedPoints += 3;
+            	}
+            	m_pile.flush();
+            	System.out.println("YOU GOT A POINTTTTT");
+            }
+            else {
+            	m_pile.addCard(card);
+            }
+            
             // continue
             for (Player player : m_playerQueue) {
                 if (player != playerOfCard) {
@@ -125,9 +138,6 @@ public class GameBoard extends StackPane implements ActionObserver
                 }
             }
             playerOfCard.removeCard(card);
-
-            //TODO add to pile, check for possible award of points, and continue play (if cards left in deck)
-            m_pile.addCard(card);
             /*
             PointManager class:
                 Based on current value of Pile (only top card matters?),

@@ -15,6 +15,21 @@ public class Card extends ImageView
         m_rank = rank;
         m_texture = getImageForEnum(suit, rank);
         setImage(m_texture);
+        if(suit.equals(Suit.CLUB) && rank.equals(Rank.TWO)) {
+        	m_point = 2;
+        }
+        else if(suit.equals(Suit.DIAMOND) && rank.equals(Rank.TEN)) {
+        	m_point = 3;
+        }
+        else if(rank.equals(Rank.JACK)) {
+        	m_point = 1;
+        }
+        else if(rank.equals(Rank.ACE)) {
+        	m_point = 1;
+        }
+        else {
+        	m_point = 0;
+        }
     }
 
     public Card(Card copiedCard)
@@ -65,9 +80,11 @@ public class Card extends ImageView
 
     public Suit getSuit() {return m_suit;}
     public Rank getRank() {return m_rank;}
+    public int getPoint() {return m_point;}
    
 
     private Suit m_suit;
     private Rank m_rank;
     public Image m_texture;
+    public int m_point;
 }

@@ -15,8 +15,9 @@ public class Pile extends ImageView
     public void addCard(Card card)
     {
         m_topCard = card;
-        m_points = 1;//card.point;
+        m_points += card.getPoint();//card.point;
         setImage(card.m_texture);
+        m_numberOfCards += 1;
     }
 
     public Card getTopCard()
@@ -28,32 +29,20 @@ public class Pile extends ImageView
     {
         return null;//return new ArrayList<Card>(m_cards);
     }
-
-    //Would the comment below be easily adaptable to how we could get the points available in the pile?
-    /*public int points() {
-    	int point;
-    	for(int i = m_cards.length() + 1 : i > 0 : i--) {
-    		if(card.getRank() == JACK) {
-    			point ++;
-    		}
-    		else if(card.getRank() == ACE) {
-    			point ++;
-    		}
-    		else if(card.getRank() == TWO && card.getSuit() == CLUBS) {
-    			point += 2;
-    		}
-    		else if(card.getRank() == TEN && card.getSuit() == DIAMONDS) {
-    			point += 3;
-    		}
-    	}
-    	return point;
-    }*/
     
     public void flush()
     {
         m_topCard = null;
         m_numberOfCards = 0;
         m_points = 0;
+    }
+    
+    public int getPileValue() {
+    	return m_points;
+    }
+    
+    public int getNumCards() {
+    	return m_numberOfCards;
     }
 
     private Card m_topCard;
