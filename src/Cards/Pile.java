@@ -9,23 +9,24 @@ public class Pile extends ImageView
 {
     public Pile()
     {
-        m_cards = new Stack<>();
+        m_topCard = new Card();
     }
 
     public void addCard(Card card)
     {
-        m_cards.push(card);
+        m_topCard = card;
+        m_points = card.point;
         setImage(card.m_texture);
     }
 
     public Card getTopCard()
     {
-        return m_cards.peek();
+        return m_topCard;
     }
 
     public ArrayList<Card> getRemainingCards()
     {
-        return new ArrayList<Card>(m_cards);
+        return null;//return new ArrayList<Card>(m_cards);
     }
 
     //Would the comment below be easily adaptable to how we could get the points available in the pile?
@@ -50,8 +51,12 @@ public class Pile extends ImageView
     
     public void flush()
     {
-        m_cards.clear();
+        m_topCard = null;
+        m_numberOfCards = 0;
+        m_points = 0;
     }
 
-    private Stack<Card> m_cards;
+    private Card m_topCard;
+    private int m_numberOfCards = 0;
+    private int m_points = 0;
 }
