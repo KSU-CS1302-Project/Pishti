@@ -120,7 +120,9 @@ public class GameBoard extends StackPane implements ActionObserver
             
             if(m_pile.getTopCard().equals(card)) {
             	m_pile.addCard(card);
+            	System.out.println("add card success");
             	playerOfCard.capturedPoints += m_pile.getPileValue();
+            	System.out.println("Adding Points to playerOfCard success");
             	if(m_pile.getNumCards() > 26) {
             		playerOfCard.capturedPoints += 3;
             	}
