@@ -97,4 +97,5 @@ public abstract class Player extends Group
     protected ArrayList<Card> m_cards;
     public ActionSubject m_subject; //!< class to notify observers (like GameBoard) of actions
     public int capturedPoints = 0;
+    public int capturedCards = 0;
 }
