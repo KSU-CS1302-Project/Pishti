@@ -119,7 +119,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
             //I think here is where we would need to add in the points values for each card?
 
-            if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK)) {
+            if((m_pile.getTopCard() != null) && (card.getRank() == Rank.JACK)) {
             	System.out.println("Jack played");
             	m_pile.addCard(card);
             	System.out.println("Jack added to stack");
@@ -131,6 +131,26 @@ public class GameBoard extends StackPane implements ActionObserver
             	}
             	m_pile.flush();
             	System.out.println("Deck cleared");
+            }
+            
+            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK) 
+            		&& (m_pile.getTopCard().getRank() == card.getRank()) && m_pile.getNumCards() == 1) {
+            	System.out.println("Jack PISHTI found!");
+            	m_pile.addCard(card);
+            	System.out.println("Jack Pishti Added to stack");
+            	playerOfCard.capturedPoints += 20;
+            	System.out.println("20 points added");
+            	m_pile.flush();
+            }
+            
+            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())
+            		 && (m_pile.getNumCards() == 1)) {
+            	System.out.println("Non-Jack Pishti found!");
+            	m_pile.addCard(card);
+            	System.out.println("Non-jack pishti added to stack");
+            	playerOfCard.capturedPoints += 10;
+            	System.out.println("10 points added");
+            	m_pile.flush();
             }
             
             else if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
