@@ -105,7 +105,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
-        pathTransition.setDuration(Duration.millis(1500));
+        pathTransition.setDuration(Duration.millis(400));
         pathTransition.setNode(animatedCard);
         card.setVisible(false);
         pathTransition.play();
@@ -147,7 +147,7 @@ public class GameBoard extends StackPane implements ActionObserver
                     }
                 }
                 if (playersWithWinningPoints != 0)
-                    return;
+                    endGame();
                 if (m_deck.remainingCards() >=2) {
                     dealCards();
                 } else {
@@ -157,6 +157,11 @@ public class GameBoard extends StackPane implements ActionObserver
                 }
             }
         });
+    }
+
+    private void endGame()
+    {
+
     }
 
     private Bounds getBoundsInAnimationLayer(Node node) {
