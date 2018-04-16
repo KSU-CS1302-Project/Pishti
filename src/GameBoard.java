@@ -16,6 +16,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -161,7 +162,11 @@ public class GameBoard extends StackPane implements ActionObserver
 
     private void endGame()
     {
-
+        getChildren().remove(m_animationLayer);
+        getChildren().remove(m_layout);
+        m_layout = new BorderPane();
+        getChildren().add(m_layout);
+        m_layout.setCenter(new Text("PLAYER WON!"));
     }
 
     private Bounds getBoundsInAnimationLayer(Node node) {
