@@ -118,7 +118,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
             //I think here is where we would need to add in the points values for each card?
             
-            if(m_pile.getTopCard() == card) {
+            if(m_pile.getTopCard().equals(card)) {
             	m_pile.addCard(card);
             	playerOfCard.capturedPoints += m_pile.getPileValue();
             	if(m_pile.getNumCards() > 26) {
