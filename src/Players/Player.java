@@ -61,6 +61,12 @@ public abstract class Player extends Group
     // what this method does will differ between the Players.HumanPlayer and AI. Thus, it is abstract.
     public abstract void cardPlayedByOpponent(Card playedCard);
 
+    // implement in subclasses
+    public void roundWon()
+    {
+        return;
+    }
+
     // this must be here, in one method, because both the card must be queued and the notification sent, together
     protected final void playCard(Card card)
     {
