@@ -35,6 +35,7 @@ public class Pile extends ImageView
         m_topCard = null;
         m_numberOfCards = 0;
         m_points = 0;
+        setImage(null);
     }
     
     public int getPileValue() {

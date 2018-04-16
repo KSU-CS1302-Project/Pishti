@@ -106,7 +106,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
-        pathTransition.setDuration(Duration.millis(400));
+        pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setNode(animatedCard);
         card.setVisible(false);
         pathTransition.play();
@@ -117,8 +117,10 @@ public class GameBoard extends StackPane implements ActionObserver
             animatedCard.setVisible(false);
 
             //I think here is where we would need to add in the points values for each card?
-            
-            if(m_pile.getTopCard().equals(card)) {
+
+            if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
+                System.out.println("KSJFDLKJSFDLKJS:LKFDJ");
+                System.out.println("JJKJDSLKFJSLKDFJLKSDJF");
             	m_pile.addCard(card);
             	playerOfCard.capturedPoints += m_pile.getPileValue();
             	if(m_pile.getNumCards() > 26) {
