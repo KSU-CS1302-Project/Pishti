@@ -33,7 +33,7 @@ public class AIPlayer extends Player
     private Card getCardToPlay()
     {
         try {
-            Thread.sleep(1000);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

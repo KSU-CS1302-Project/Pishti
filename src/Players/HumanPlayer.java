@@ -37,6 +37,14 @@ public class HumanPlayer extends Player
     public void cardPlayedByOpponent(Card playedCard)
     {
         playActive = false;
+        if (automaticMode) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            playCard(m_cards.get(0));
+        }
     } // does nothing.  To notify human player, just show GameBoard changes
 
     private Card getCardAtPos(double x, double y)
@@ -55,4 +63,5 @@ public class HumanPlayer extends Player
     }
 
     boolean playActive = false;
+    boolean automaticMode = false;
 }
