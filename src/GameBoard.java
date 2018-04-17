@@ -8,10 +8,14 @@ import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.PathTransition;
+import javafx.beans.value.ObservableIntegerValue;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -31,6 +35,16 @@ public class GameBoard extends StackPane implements ActionObserver
         m_layout = new BorderPane();
         m_animationLayer = new Pane();
         m_animationLayer.setPickOnBounds(false);
+        m_pointsDisplay = new Text[2];
+        m_pointsDisplayPane = new HBox();
+        m_pointsDisplayPane.setSpacing(50);
+        m_pointsDisplayPane.setAlignment(Pos.CENTER);
+        m_pointsDisplay[0] = new Text("Player 1: " + "0");
+        m_pointsDisplay[1] = new Text("Player 2: " + "0");
+        m_pointsDisplay[0].setStyle("-fx-fill: RED; -fx-font-size: 16;");
+        m_pointsDisplay[1].setStyle("-fx-fill: blue; -fx-font-size: 16;");
+        m_layout.setCenter(m_pointsDisplayPane);
+        m_pointsDisplayPane.getChildren().addAll(m_pointsDisplay);
         getChildren().addAll(m_layout, m_animationLayer);
         setup(2);
     }
@@ -123,10 +137,10 @@ public class GameBoard extends StackPane implements ActionObserver
             	System.out.println("Jack played");
             	m_pile.addCard(card);
             	System.out.println("Jack added to stack");
-            	playerOfCard.capturedPoints += m_pile.getPileValue();
+            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
             	System.out.println("Points added");
             	if(m_pile.getNumCards() > 26) {
-            		playerOfCard.capturedPoints += 3;
+            		addPointsToPlayer(playerOfCard, 3);
             		System.out.println("Majority of cards awarded");  		
             	}
             	m_pile.flush();
@@ -138,7 +152,7 @@ public class GameBoard extends StackPane implements ActionObserver
             	System.out.println("Jack PISHTI found!");
             	m_pile.addCard(card);
             	System.out.println("Jack Pishti Added to stack");
-            	playerOfCard.capturedPoints += 20;
+            	addPointsToPlayer(playerOfCard, 20);
             	System.out.println("20 points added");
             	m_pile.flush();
             }
@@ -148,7 +162,7 @@ public class GameBoard extends StackPane implements ActionObserver
             	System.out.println("Non-Jack Pishti found!");
             	m_pile.addCard(card);
             	System.out.println("Non-jack pishti added to stack");
-            	playerOfCard.capturedPoints += 10;
+            	addPointsToPlayer(playerOfCard, 10);
             	System.out.println("10 points added");
             	m_pile.flush();
             }
@@ -158,10 +172,10 @@ public class GameBoard extends StackPane implements ActionObserver
                 System.out.println("JJKJDSLKFJSLKDFJLKSDJF");
             	m_pile.addCard(card);
             	System.out.println("add card success");
-            	playerOfCard.capturedPoints += m_pile.getPileValue();
+            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
             	System.out.println("Adding Points to playerOfCard success");
             	if(m_pile.getNumCards() > 26) {
-            		playerOfCard.capturedPoints += 3;
+            		addPointsToPlayer(playerOfCard, 3);
             	}
             	m_pile.flush();
             	System.out.println("YOU GOT A POINTTTTT");
@@ -242,6 +256,14 @@ public class GameBoard extends StackPane implements ActionObserver
         return animationLayerBounds;
     }
 
+    private void addPointsToPlayer(Player player, int points)
+    {
+        player.capturedPoints += points;
+        String pointsValue = Integer.toString(player.capturedPoints);
+        int index = (player == m_humanPlayer) ? 0 : 1;
+        m_pointsDisplay[index].setText("Player " + Integer.toString(index) + ": " + pointsValue);
+    }
+
     @Override
     public <T> void onActionNotification(T object, Action action)
     {
@@ -263,4 +285,6 @@ public class GameBoard extends StackPane implements ActionObserver
     private Pile m_pile;
     BorderPane m_layout;
     Pane m_animationLayer;
+    HBox m_pointsDisplayPane;
+    Text[] m_pointsDisplay;
 }

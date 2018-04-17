@@ -1,5 +1,6 @@
 package Cards;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ public class Pile extends ImageView
     public Pile()
     {
         m_topCard = new Card();
+        setImage(new Image("back.png", 167, 242, false, false));
     }
 
     public void addCard(Card card)
@@ -35,7 +37,7 @@ public class Pile extends ImageView
         m_topCard = null;
         m_numberOfCards = 0;
         m_points = 0;
-        setImage(null);
+        setImage(new Image("back.png", 167, 242, false, false));
     }
     
     public int getPileValue() {
