@@ -43,7 +43,11 @@ public class Card extends ImageView
         m_suit = copiedCard.getSuit();
         m_rank = copiedCard.getRank();
         m_texture = getImageForEnum(m_suit, m_rank);
-        setImage(m_texture);
+        m_frontVisible = copiedCard.m_frontVisible;
+        if (m_frontVisible)
+            setImage(m_texture);
+        else
+            setImage(new Image("back.png", 167, 242, false, false));
     }
 
     private Image getImageForEnum(Suit suit, Rank rank)
