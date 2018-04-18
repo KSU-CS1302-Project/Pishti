@@ -13,7 +13,7 @@ public class Game extends Application
         GameBoard board = new GameBoard();
 
         Scene scene = new Scene(board);
-        scene.setCamera(new PerspectiveCamera());
+        scene.setCamera(new PerspectiveCamera());//
 
         primaryStage.setTitle("PISHTI");
         primaryStage.getIcons().add(new Image("ace_of_clubs.png"));
