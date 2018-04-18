@@ -115,14 +115,14 @@ public class GameBoard extends StackPane implements ActionObserver
         double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
         double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
 
-        path.setStroke(Color.TRANSPARENT);
-        pathTransition.setDuration(Duration.millis(1000));
-        pathTransition.setNode(animatedCard);
         m_animationLayer.getChildren().addAll(path, animatedCard);
+        path.setStroke(Color.TRANSPARENT);
         path.setStartX(cardBounds.getMinX() + xOriginToCenter);
         path.setStartY(cardBounds.getMinY() + yOriginToCenter);
         path.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
         path.setEndY(pileBounds.getMinY() + yOriginToCenter);
+        pathTransition.setDuration(Duration.millis(1000));
+        pathTransition.setNode(animatedCard);
         pathTransition.setPath(path);
 
         pathTransition.setOnFinished(e -> {
