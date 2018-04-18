@@ -244,32 +244,42 @@ public class GameBoard extends StackPane implements ActionObserver
         /*
         BEGIN ROTATION SETUP
          */
-//        RotateTransition rotation1 = new RotateTransition();
-//        RotateTransition rotation2 = new RotateTransition();
-//        rotation1.setAxis(Rotate.Y_AXIS);
-//        rotation2.setAxis(Rotate.Y_AXIS);
-//        rotation1.setFromAngle(360);
-//        rotation1.setToAngle(180);
-//        rotation2.setFromAngle(180);
-//        rotation2.setToAngle(0);
-//        rotation1.setInterpolator(Interpolator.LINEAR);
-//        rotation1.setCycleCount(10);
-//        rotation2.setInterpolator(Interpolator.LINEAR);
-//        rotation2.setCycleCount(10);
-//        rotation1.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
-//        rotation2.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
-//        rotation1.setOnFinished(e -> {
-//            animatedCard.setFrontVisible(true);
-//            rotation2.play();
-//        });
+        RotateTransition rotation1x = new RotateTransition();
+        RotateTransition rotation1y = new RotateTransition();
+        rotation1x.setNode(animatedCard);
+        rotation1x.setAxis(Rotate.X_AXIS);
+        rotation1x.setFromAngle(360);
+        rotation1x.setToAngle(270);
+        rotation1x.setInterpolator(Interpolator.LINEAR);
+        rotation1x.setCycleCount(1);
+        //rotation1x.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
+        rotation1y.setNode(animatedCard);
+        rotation1x.setAxis(Rotate.X_AXIS);
+        rotation1x.setFromAngle(360);
+        rotation1x.setToAngle(180);
+        rotation1x.setCycleCount(1);
+        rotation1x.setInterpolator(Interpolator.LINEAR);
+
+
+        RotateTransition rotation2 = new RotateTransition();
+        rotation2.setNode(animatedCard);
+        rotation2.setAxis(Rotate.X_AXIS);
+        rotation2.setFromAngle(270);
+        rotation2.setToAngle(180);
+        rotation2.setInterpolator(Interpolator.LINEAR);
+        rotation2.setCycleCount(1);
+        //rotation2.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
+        rotation1x.setOnFinished(e -> {
+            animatedCard.setFrontVisible(true);
+            rotation2.play();
+        });
 
         /*
         END ROTATION SETUP
          */
 
-        //ParallelTransition transitions = new ParallelTransition(card);//, pathTransition, rotation1);
-        //transitions.play();
-        pathTransition.play();
+        ParallelTransition transitions = new ParallelTransition(pathTransition, rotation1x);//, pathTransition, rotation1);
+        transitions.play();
     }
 
     private void endGame()
