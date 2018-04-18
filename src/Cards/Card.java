@@ -9,6 +9,12 @@ public class Card extends ImageView
     {
     }
 
+    public Card(Suit suit, Rank rank, boolean visible)
+    {
+        this(suit, rank);
+        setFrontVisible(visible);
+    }
+
     public Card(Suit suit, Rank rank)
     {
         m_suit = suit;
@@ -37,7 +43,11 @@ public class Card extends ImageView
         m_suit = copiedCard.getSuit();
         m_rank = copiedCard.getRank();
         m_texture = getImageForEnum(m_suit, m_rank);
-        setImage(m_texture);
+        m_frontVisible = copiedCard.m_frontVisible;
+        if (m_frontVisible)
+            setImage(m_texture);
+        else
+            setImage(new Image("back.png", 167, 242, false, false));
     }
 
     private Image getImageForEnum(Suit suit, Rank rank)
@@ -78,6 +88,21 @@ public class Card extends ImageView
         return "NA";
     }
 
+    public void setFrontVisible(boolean visible)
+    {
+        if (!visible) {
+            setImage(new Image("back.png", 167, 242, false, false));
+        } else {
+            setImage(getImageForEnum(m_suit, m_rank));
+        }
+        m_frontVisible = visible;
+    }
+
+    public boolean getFrontVisible()
+    {
+        return m_frontVisible;
+    }
+
     public boolean equals(Card card)
     {
         return (card.m_rank == this.m_rank);
@@ -91,5 +116,6 @@ public class Card extends ImageView
     private Suit m_suit;
     private Rank m_rank;
     public Image m_texture;
+    private boolean m_frontVisible = true;
     public int m_point;
 }
