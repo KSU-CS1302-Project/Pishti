@@ -21,6 +21,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -39,8 +40,8 @@ public class GameBoard extends StackPane implements ActionObserver
         m_pointsDisplayPane = new HBox();
         m_pointsDisplayPane.setSpacing(50);
         m_pointsDisplayPane.setAlignment(Pos.CENTER);
-        m_pointsDisplay[0] = new Text("Player 1: " + "0");
-        m_pointsDisplay[1] = new Text("Player 2: " + "0");
+        m_pointsDisplay[0] = new Text("You: " + "0");
+        m_pointsDisplay[1] = new Text("Computer: " + "0");
         m_pointsDisplay[0].setStyle("-fx-fill: RED; -fx-font-size: 16;");
         m_pointsDisplay[1].setStyle("-fx-fill: blue; -fx-font-size: 16;");
         m_layout.setCenter(m_pointsDisplayPane);
@@ -72,7 +73,12 @@ public class GameBoard extends StackPane implements ActionObserver
             m_layout.setLeft((Player)(tempArr[3]));
             m_layout.setCenter(m_deck);
         } else {
-            m_layout.setTop((Player)((m_playerQueue.toArray())[1]));
+        	//StackPane tempStack = new StackPane();
+            //tempStack.getChildren().add((Player)(m_playerQueue.toArray())[1]);
+            //tempRect.setWidth(m_layout.getWidth());tempRect.setHeight(m_layout.getHeight());tempRect.setFill(Color.BLACK);
+            //tempStack.getChildren().add(tempRect);
+        	//m_layout.setTop(tempStack);
+            m_layout.setTop((Player)(m_playerQueue.toArray())[1]);
             m_layout.setLeft(m_deck);
             m_layout.setRight(m_pile);
         }
@@ -279,6 +285,7 @@ public class GameBoard extends StackPane implements ActionObserver
         }
     }
 
+    //private Rectangle tempRect;
     private HumanPlayer m_humanPlayer;
     private Queue<Player> m_playerQueue; // holds players - In queue to track and enforce turn order.
     private Deck m_deck;
