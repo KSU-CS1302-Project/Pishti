@@ -149,30 +149,30 @@ public class GameBoard extends StackPane implements ActionObserver
 
         //
         rotation1X.setNode(animatedCard);
-        rotation1X.setAxis(Rotate.Z_AXIS);
+        rotation1X.setAxis(Rotate.X_AXIS);
         rotation1X.setFromAngle(360);
         rotation1X.setToAngle(270);
         rotation1X.setInterpolator(Interpolator.LINEAR);
         rotation1X.setCycleCount(1);
 
         rotation1Y.setNode(animatedCard);
-        rotation1Y.setAxis(Rotate.Z_AXIS);
+        rotation1Y.setAxis(Rotate.X_AXIS);
         rotation1Y.setFromAngle(360);
         rotation1Y.setToAngle(270);
         rotation1Y.setInterpolator(Interpolator.LINEAR);
         rotation1Y.setCycleCount(1);
 
         rotation2X.setNode(animatedCard);
-        rotation2X.setAxis(Rotate.Z_AXIS);
-        rotation2X.setFromAngle(270);
-        rotation2X.setToAngle(180);
+        rotation2X.setAxis(Rotate.X_AXIS);
+        rotation2X.setFromAngle(90);
+        rotation2X.setToAngle(0);
         rotation2X.setInterpolator(Interpolator.LINEAR);
         rotation2X.setCycleCount(1);
 
         rotation2Y.setNode(animatedCard);
-        rotation2Y.setAxis(Rotate.Z_AXIS);
-        rotation2Y.setFromAngle(270);
-        rotation2Y.setToAngle(180);
+        rotation2Y.setAxis(Rotate.X_AXIS);
+        rotation2Y.setFromAngle(90);
+        rotation2Y.setToAngle(0);
         rotation2Y.setInterpolator(Interpolator.LINEAR);
         rotation2Y.setCycleCount(1);
 
