@@ -322,7 +322,8 @@ public class GameBoard extends StackPane implements ActionObserver
         player.capturedPoints += points;
         String pointsValue = Integer.toString(player.capturedPoints);
         int index = (player == m_humanPlayer) ? 0 : 1;
-        m_pointsDisplay[index].setText("Player " + Integer.toString(index) + ": " + pointsValue);
+        String label = (index == 0) ? "You" : "Computer";
+        m_pointsDisplay[index].setText(label + ": " + pointsValue);
     }
 
     @Override
