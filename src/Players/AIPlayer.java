@@ -30,6 +30,15 @@ public class AIPlayer extends Player
         System.out.println("THIS SHOULD RUN BEFORE THE TASK!!!");
     }
 
+    @Override
+    public void dealHand(ArrayList<Card> hand)
+    {
+        super.dealHand(hand);
+        for (Card c : hand) {
+            c.setFrontVisible(false);
+        }
+    }
+
     private Card getCardToPlay()
     {
         try {
