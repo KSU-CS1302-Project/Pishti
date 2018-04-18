@@ -105,91 +105,90 @@ public class GameBoard extends StackPane implements ActionObserver
         }
     }
 
-    // card was played.  remove it from the hand of the player that played it, and notify other players.
-    private void cardPlayed(Player playerOfCard, Card card)
+    private void moveCard(Card card, Node destination, Runnable callback)
     {
-        Line animate = new Line();
-        animate.setStroke(Color.TRANSPARENT);
+        Line path = new Line();
         Card animatedCard = new Card(card);
-        m_animationLayer.getChildren().addAll(animate, animatedCard);
+        PathTransition pathTransition = new PathTransition();
         Bounds cardBounds = getBoundsInAnimationLayer(card);
-        Bounds pileBounds = getBoundsInAnimationLayer(m_pile);
-
+        Bounds pileBounds = getBoundsInAnimationLayer(destination);
         double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
         double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
 
-        animate.setStartX(cardBounds.getMinX() + xOriginToCenter);
-        animate.setStartY(cardBounds.getMinY() + yOriginToCenter);
-        animate.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
-        animate.setEndY(pileBounds.getMinY() + yOriginToCenter);
-        System.out.println("Pile width: " + m_pile.getBoundsInLocal().getWidth());
-        System.out.println("DISTANCE: " + (pileBounds.getMinX() - cardBounds.getMinX()));
-
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setPath(animate);
+        path.setStroke(Color.TRANSPARENT);
         pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setNode(animatedCard);
-        card.setVisible(false);
-        pathTransition.play();
+        m_animationLayer.getChildren().addAll(path, animatedCard);
+        path.setStartX(cardBounds.getMinX() + xOriginToCenter);
+        path.setStartY(cardBounds.getMinY() + yOriginToCenter);
+        path.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
+        path.setEndY(pileBounds.getMinY() + yOriginToCenter);
+        pathTransition.setPath(path);
 
         pathTransition.setOnFinished(e -> {
-            // finish animation processing
-            System.out.println("ANIMATION FINISHED");
+            callback.run();
             animatedCard.setVisible(false);
+        });
 
-            //I think here is where we would need to add in the points values for each card?
+        card.setVisible(false);
+        pathTransition.play();
+    }
 
+    // card was played.  remove it from the hand of the player that played it, and notify other players.
+    private void cardPlayed(Player playerOfCard, Card card)
+    {
+        moveCard(card, m_pile, () -> {
             if((m_pile.getTopCard() != null) && (card.getRank() == Rank.JACK)) {
-            	System.out.println("Jack played");
-            	m_pile.addCard(card);
-            	System.out.println("Jack added to stack");
-            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
-            	System.out.println("Points added");
-            	if(m_pile.getNumCards() > 26) {
-            		addPointsToPlayer(playerOfCard, 3);
-            		System.out.println("Majority of cards awarded");  		
-            	}
-            	m_pile.flush();
-            	System.out.println("Deck cleared");
+                System.out.println("Jack played");
+                m_pile.addCard(card);
+                System.out.println("Jack added to stack");
+                addPointsToPlayer(playerOfCard, m_pile.getPileValue());
+                System.out.println("Points added");
+                if(m_pile.getNumCards() > 26) {
+                    addPointsToPlayer(playerOfCard, 3);
+                    System.out.println("Majority of cards awarded");
+                }
+                m_pile.flush();
+                System.out.println("Deck cleared");
             }
-            
-            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK) 
-            		&& (m_pile.getTopCard().getRank() == card.getRank()) && m_pile.getNumCards() == 1) {
-            	System.out.println("Jack PISHTI found!");
-            	m_pile.addCard(card);
-            	System.out.println("Jack Pishti Added to stack");
-            	addPointsToPlayer(playerOfCard, 20);
-            	System.out.println("20 points added");
-            	m_pile.flush();
+
+            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK)
+                    && (m_pile.getTopCard().getRank() == card.getRank()) && m_pile.getNumCards() == 1) {
+                System.out.println("Jack PISHTI found!");
+                m_pile.addCard(card);
+                System.out.println("Jack Pishti Added to stack");
+                addPointsToPlayer(playerOfCard, 20);
+                System.out.println("20 points added");
+                m_pile.flush();
             }
-            
+
             else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())
-            		 && (m_pile.getNumCards() == 1)) {
-            	System.out.println("Non-Jack Pishti found!");
-            	m_pile.addCard(card);
-            	System.out.println("Non-jack pishti added to stack");
-            	addPointsToPlayer(playerOfCard, 10);
-            	System.out.println("10 points added");
-            	m_pile.flush();
+                    && (m_pile.getNumCards() == 1)) {
+                System.out.println("Non-Jack Pishti found!");
+                m_pile.addCard(card);
+                System.out.println("Non-jack pishti added to stack");
+                addPointsToPlayer(playerOfCard, 10);
+                System.out.println("10 points added");
+                m_pile.flush();
             }
-            
+
             else if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
                 System.out.println("KSJFDLKJSFDLKJS:LKFDJ");
                 System.out.println("JJKJDSLKFJSLKDFJLKSDJF");
-            	m_pile.addCard(card);
-            	System.out.println("add card success");
-            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
-            	System.out.println("Adding Points to playerOfCard success");
-            	if(m_pile.getNumCards() > 26) {
-            		addPointsToPlayer(playerOfCard, 3);
-            	}
-            	m_pile.flush();
-            	System.out.println("YOU GOT A POINTTTTT");
+                m_pile.addCard(card);
+                System.out.println("add card success");
+                addPointsToPlayer(playerOfCard, m_pile.getPileValue());
+                System.out.println("Adding Points to playerOfCard success");
+                if(m_pile.getNumCards() > 26) {
+                    addPointsToPlayer(playerOfCard, 3);
+                }
+                m_pile.flush();
+                System.out.println("YOU GOT A POINTTTTT");
             }
             else {
-            	m_pile.addCard(card);
+                m_pile.addCard(card);
             }
-            
+
             // continue
             for (Player player : m_playerQueue) {
                 if (player != playerOfCard) {
