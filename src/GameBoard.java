@@ -7,7 +7,7 @@ import Cards.Rank;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
-import javafx.animation.PathTransition;
+import javafx.animation.*;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -23,6 +23,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -105,16 +106,37 @@ public class GameBoard extends StackPane implements ActionObserver
         }
     }
 
-    private void moveCard(Card card, Node destination, Runnable callback)
+    private void moveCard(Card card, Node destination, Runnable callback, boolean doFlip)
     {
+        // initialize transitions
+        ParallelTransition rotateAndMove = new ParallelTransition();
+        PathTransition pathTransition = new PathTransition();
+        SequentialTransition sequence = new SequentialTransition();
+          ParallelTransition rotationStep1 = new ParallelTransition();
+            RotateTransition rotation1X = new RotateTransition();
+            RotateTransition rotation1Y = new RotateTransition();
+          ParallelTransition rotationStep2 = new ParallelTransition();
+            RotateTransition rotation2X = new RotateTransition();
+            RotateTransition rotation2Y = new RotateTransition();
+
+        // add transitions into containers
+        if (doFlip) {
+            rotateAndMove.getChildren().addAll(pathTransition, sequence);
+            sequence.getChildren().addAll(rotationStep1, rotationStep2);
+            rotationStep1.getChildren().addAll(rotation1X, rotation1Y);
+            rotationStep2.getChildren().addAll(rotation2X, rotation2Y);
+        } else {
+            rotateAndMove.getChildren().addAll(pathTransition);
+        }
+
         Line path = new Line();
         Card animatedCard = new Card(card);
-        PathTransition pathTransition = new PathTransition();
         Bounds cardBounds = getBoundsInAnimationLayer(card);
         Bounds pileBounds = getBoundsInAnimationLayer(destination);
         double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
         double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
 
+        // setup path transition
         m_animationLayer.getChildren().addAll(path, animatedCard);
         path.setStroke(Color.TRANSPARENT);
         path.setStartX(cardBounds.getMinX() + xOriginToCenter);
@@ -125,13 +147,47 @@ public class GameBoard extends StackPane implements ActionObserver
         pathTransition.setNode(animatedCard);
         pathTransition.setPath(path);
 
-        pathTransition.setOnFinished(e -> {
+        //
+        rotation1X.setNode(animatedCard);
+        rotation1X.setAxis(Rotate.X_AXIS);
+        rotation1X.setFromAngle(360);
+        rotation1X.setToAngle(270);
+        rotation1X.setInterpolator(Interpolator.LINEAR);
+        rotation1X.setCycleCount(1);
+
+        rotation1Y.setNode(animatedCard);
+        rotation1Y.setAxis(Rotate.X_AXIS);
+        rotation1Y.setFromAngle(360);
+        rotation1Y.setToAngle(270);
+        rotation1Y.setInterpolator(Interpolator.LINEAR);
+        rotation1Y.setCycleCount(1);
+
+        rotation2X.setNode(animatedCard);
+        rotation2X.setAxis(Rotate.X_AXIS);
+        rotation2X.setFromAngle(270);
+        rotation2X.setToAngle(180);
+        rotation2X.setInterpolator(Interpolator.LINEAR);
+        rotation2X.setCycleCount(1);
+
+        rotation2Y.setNode(animatedCard);
+        rotation2Y.setAxis(Rotate.X_AXIS);
+        rotation2Y.setFromAngle(270);
+        rotation2Y.setToAngle(180);
+        rotation2Y.setInterpolator(Interpolator.LINEAR);
+        rotation2Y.setCycleCount(1);
+
+        rotationStep1.setOnFinished(e -> {
+            animatedCard.setFrontVisible(true);
+        });
+
+
+        rotateAndMove.setOnFinished(e -> {
             callback.run();
             animatedCard.setVisible(false);
         });
 
         card.setVisible(false);
-        pathTransition.play();
+        rotateAndMove.play();
     }
 
     // card was played.  remove it from the hand of the player that played it, and notify other players.
@@ -229,7 +285,7 @@ public class GameBoard extends StackPane implements ActionObserver
                     dealCards();
                 }
             }
-        });
+        }, playerOfCard instanceof AIPlayer);
     }
 
     private void endGame()
