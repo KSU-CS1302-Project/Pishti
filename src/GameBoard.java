@@ -7,10 +7,7 @@ import Cards.Rank;
 import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
-import javafx.animation.Interpolator;
-import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
-import javafx.animation.RotateTransition;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -24,8 +21,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -43,8 +40,8 @@ public class GameBoard extends StackPane implements ActionObserver
         m_pointsDisplayPane = new HBox();
         m_pointsDisplayPane.setSpacing(50);
         m_pointsDisplayPane.setAlignment(Pos.CENTER);
-        m_pointsDisplay[0] = new Text("Player 1: " + "0");
-        m_pointsDisplay[1] = new Text("Player 2: " + "0");
+        m_pointsDisplay[0] = new Text("You: " + "0");
+        m_pointsDisplay[1] = new Text("Computer: " + "0");
         m_pointsDisplay[0].setStyle("-fx-fill: RED; -fx-font-size: 16;");
         m_pointsDisplay[1].setStyle("-fx-fill: blue; -fx-font-size: 16;");
         m_layout.setCenter(m_pointsDisplayPane);
@@ -76,7 +73,12 @@ public class GameBoard extends StackPane implements ActionObserver
             m_layout.setLeft((Player)(tempArr[3]));
             m_layout.setCenter(m_deck);
         } else {
-            m_layout.setTop((Player)((m_playerQueue.toArray())[1]));
+        	//StackPane tempStack = new StackPane();
+            //tempStack.getChildren().add((Player)(m_playerQueue.toArray())[1]);
+            //tempRect.setWidth(m_layout.getWidth());tempRect.setHeight(m_layout.getHeight());tempRect.setFill(Color.BLACK);
+            //tempStack.getChildren().add(tempRect);
+        	//m_layout.setTop(tempStack);
+            m_layout.setTop((Player)(m_playerQueue.toArray())[1]);
             m_layout.setLeft(m_deck);
             m_layout.setRight(m_pile);
         }
@@ -106,10 +108,6 @@ public class GameBoard extends StackPane implements ActionObserver
     // card was played.  remove it from the hand of the player that played it, and notify other players.
     private void cardPlayed(Player playerOfCard, Card card)
     {
-        int fullDuration = 1000;
-        /*
-        START PATHTRANSITION SETUP
-         */
         Line animate = new Line();
         animate.setStroke(Color.TRANSPARENT);
         Card animatedCard = new Card(card);
@@ -129,10 +127,11 @@ public class GameBoard extends StackPane implements ActionObserver
 
         PathTransition pathTransition = new PathTransition();
         pathTransition.setPath(animate);
-        pathTransition.setDuration(Duration.millis(fullDuration));
+        pathTransition.setDuration(Duration.millis(1000));
         pathTransition.setNode(animatedCard);
         card.setVisible(false);
-        //pathTransition.play();
+        pathTransition.play();
+
         pathTransition.setOnFinished(e -> {
             // finish animation processing
             System.out.println("ANIMATION FINISHED");
@@ -141,56 +140,56 @@ public class GameBoard extends StackPane implements ActionObserver
             //I think here is where we would need to add in the points values for each card?
 
             if((m_pile.getTopCard() != null) && (card.getRank() == Rank.JACK)) {
-                System.out.println("Jack played");
-                m_pile.addCard(card);
-                System.out.println("Jack added to stack");
-                addPointsToPlayer(playerOfCard, m_pile.getPileValue());
-                System.out.println("Points added");
-                if(m_pile.getNumCards() > 26) {
-                    addPointsToPlayer(playerOfCard, 3);
-                    System.out.println("Majority of cards awarded");
-                }
-                m_pile.flush();
-                System.out.println("Deck cleared");
+            	System.out.println("Jack played");
+            	m_pile.addCard(card);
+            	System.out.println("Jack added to stack");
+            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
+            	System.out.println("Points added");
+            	if(m_pile.getNumCards() > 26) {
+            		addPointsToPlayer(playerOfCard, 3);
+            		System.out.println("Majority of cards awarded");  		
+            	}
+            	m_pile.flush();
+            	System.out.println("Deck cleared");
             }
-
-            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK)
-                    && (m_pile.getTopCard().getRank() == card.getRank()) && m_pile.getNumCards() == 1) {
-                System.out.println("Jack PISHTI found!");
-                m_pile.addCard(card);
-                System.out.println("Jack Pishti Added to stack");
-                addPointsToPlayer(playerOfCard, 20);
-                System.out.println("20 points added");
-                m_pile.flush();
+            
+            else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == Rank.JACK) 
+            		&& (m_pile.getTopCard().getRank() == card.getRank()) && m_pile.getNumCards() == 1) {
+            	System.out.println("Jack PISHTI found!");
+            	m_pile.addCard(card);
+            	System.out.println("Jack Pishti Added to stack");
+            	addPointsToPlayer(playerOfCard, 20);
+            	System.out.println("20 points added");
+            	m_pile.flush();
             }
-
+            
             else if((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())
-                    && (m_pile.getNumCards() == 1)) {
-                System.out.println("Non-Jack Pishti found!");
-                m_pile.addCard(card);
-                System.out.println("Non-jack pishti added to stack");
-                addPointsToPlayer(playerOfCard, 10);
-                System.out.println("10 points added");
-                m_pile.flush();
+            		 && (m_pile.getNumCards() == 1)) {
+            	System.out.println("Non-Jack Pishti found!");
+            	m_pile.addCard(card);
+            	System.out.println("Non-jack pishti added to stack");
+            	addPointsToPlayer(playerOfCard, 10);
+            	System.out.println("10 points added");
+            	m_pile.flush();
             }
-
+            
             else if ((m_pile.getTopCard() != null) && (m_pile.getTopCard().getRank() == card.getRank())) {
                 System.out.println("KSJFDLKJSFDLKJS:LKFDJ");
                 System.out.println("JJKJDSLKFJSLKDFJLKSDJF");
-                m_pile.addCard(card);
-                System.out.println("add card success");
-                addPointsToPlayer(playerOfCard, m_pile.getPileValue());
-                System.out.println("Adding Points to playerOfCard success");
-                if(m_pile.getNumCards() > 26) {
-                    addPointsToPlayer(playerOfCard, 3);
-                }
-                m_pile.flush();
-                System.out.println("YOU GOT A POINTTTTT");
+            	m_pile.addCard(card);
+            	System.out.println("add card success");
+            	addPointsToPlayer(playerOfCard, m_pile.getPileValue());
+            	System.out.println("Adding Points to playerOfCard success");
+            	if(m_pile.getNumCards() > 26) {
+            		addPointsToPlayer(playerOfCard, 3);
+            	}
+            	m_pile.flush();
+            	System.out.println("YOU GOT A POINTTTTT");
             }
             else {
-                m_pile.addCard(card);
+            	m_pile.addCard(card);
             }
-
+            
             // continue
             for (Player player : m_playerQueue) {
                 if (player != playerOfCard) {
@@ -232,48 +231,6 @@ public class GameBoard extends StackPane implements ActionObserver
                 }
             }
         });
-        /*
-        END PATH TRANSITION SETUP
-         */
-        /*
-        BEGIN ROTATION SETUP
-         */
-        RotateTransition rotation1x = new RotateTransition();
-        RotateTransition rotation1y = new RotateTransition();
-        rotation1x.setNode(animatedCard);
-        rotation1x.setAxis(Rotate.X_AXIS);
-        rotation1x.setFromAngle(360);
-        rotation1x.setToAngle(270);
-        rotation1x.setInterpolator(Interpolator.LINEAR);
-        rotation1x.setCycleCount(1);
-        //rotation1x.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
-        rotation1y.setNode(animatedCard);
-        rotation1x.setAxis(Rotate.X_AXIS);
-        rotation1x.setFromAngle(360);
-        rotation1x.setToAngle(180);
-        rotation1x.setCycleCount(1);
-        rotation1x.setInterpolator(Interpolator.LINEAR);
-
-
-        RotateTransition rotation2 = new RotateTransition();
-        rotation2.setNode(animatedCard);
-        rotation2.setAxis(Rotate.X_AXIS);
-        rotation2.setFromAngle(270);
-        rotation2.setToAngle(180);
-        rotation2.setInterpolator(Interpolator.LINEAR);
-        rotation2.setCycleCount(1);
-        //rotation2.setDuration(Duration.millis(fullDuration / 2 - fullDuration / 20));
-        rotation1x.setOnFinished(e -> {
-            animatedCard.setFrontVisible(true);
-            rotation2.play();
-        });
-
-        /*
-        END ROTATION SETUP
-         */
-
-        ParallelTransition transitions = new ParallelTransition(pathTransition, rotation1x);//, pathTransition, rotation1);
-        transitions.play();
     }
 
     private void endGame()
@@ -328,6 +285,7 @@ public class GameBoard extends StackPane implements ActionObserver
         }
     }
 
+    //private Rectangle tempRect;
     private HumanPlayer m_humanPlayer;
     private Queue<Player> m_playerQueue; // holds players - In queue to track and enforce turn order.
     private Deck m_deck;
