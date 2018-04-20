@@ -8,6 +8,7 @@ import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -89,31 +90,50 @@ public class GameBoard extends StackPane implements ActionObserver
             player.m_subject.addObserver(this);
         }
 
-        dealCards();
-        prime();
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                prime();
+                dealCards();
+            });
+        });
+        thread.start();
     }
     
     private void prime() {
+        SequentialTransition sequence4Cards = new SequentialTransition();
+        sequence4Cards.getChildren().addAll();
     	for (int i = 0; i < 4; i++) {
-    		m_pile.addCard(m_deck.draw());
+    		Card card = m_deck.draw();
+    		card.setFrontVisible(false);
+    		sequence4Cards.getChildren().add(moveCard(card, m_deck, m_pile, () -> {m_pile.addCard(card);}, true));
     	}
+    	sequence4Cards.play();
     }
 
     // gives each player an ArrayList containing 4 cards.
     private void dealCards()
     {
         int remainingCards = m_deck.remainingCards();
+        //SequentialTransition sequence = new SequentialTransition();
         for (Player player : m_playerQueue) {
             ArrayList<Card> playerHand = new ArrayList<>();
             for (int i = 0; i < Math.min(4, remainingCards / 2); ++i) {
                 Card card = m_deck.draw();
                 playerHand.add(card);
+                //ParallelTransition transition = moveCard(card, m_deck, player, () -> {}, true);
+                //sequence.getChildren().add(transition);
             }
+            //sequence.play();
             player.dealHand(playerHand);
         }
     }
 
-    private void moveCard(Card card, Node destination, Runnable callback, boolean doFlip)
+    private ParallelTransition moveCard(Card card, Node source, Node destination, Runnable callback, boolean doFlip)
     {
         // initialize transitions
         ParallelTransition rotateAndMove = new ParallelTransition();
@@ -138,7 +158,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         Line path = new Line();
         Card animatedCard = new Card(card);
-        Bounds cardBounds = getBoundsInAnimationLayer(card);
+        Bounds sourceBounds = (source == null ? getBoundsInAnimationLayer(card) : getBoundsInAnimationLayer(source));
         Bounds pileBounds = getBoundsInAnimationLayer(destination);
         double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
         double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
@@ -146,8 +166,8 @@ public class GameBoard extends StackPane implements ActionObserver
         // setup path transition
         m_animationLayer.getChildren().addAll(path, animatedCard);
         path.setStroke(Color.TRANSPARENT);
-        path.setStartX(cardBounds.getMinX() + xOriginToCenter);
-        path.setStartY(cardBounds.getMinY() + yOriginToCenter);
+        path.setStartX(sourceBounds.getMinX() + xOriginToCenter);
+        path.setStartY(sourceBounds.getMinY() + yOriginToCenter);
         path.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
         path.setEndY(pileBounds.getMinY() + yOriginToCenter);
         pathTransition.setDuration(Duration.millis(1000));
@@ -194,13 +214,13 @@ public class GameBoard extends StackPane implements ActionObserver
         });
 
         card.setVisible(false);
-        rotateAndMove.play();
+        return rotateAndMove;
     }
 
     // card was played.  remove it from the hand of the player that played it, and notify other players.
     private void cardPlayed(Player playerOfCard, Card card)
     {
-        moveCard(card, m_pile, () -> {
+        moveCard(card, null, m_pile, () -> {
             if((m_pile.getTopCard() != null) && (card.getRank() == Rank.JACK)) {
                 System.out.println("Jack played");
                 m_pile.addCard(card);
@@ -293,7 +313,7 @@ public class GameBoard extends StackPane implements ActionObserver
                     prime();
                 }
             }
-        }, playerOfCard instanceof AIPlayer);
+        }, playerOfCard instanceof AIPlayer).play();
     }
 
     private void endGame()

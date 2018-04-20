@@ -20,6 +20,7 @@ public class HumanPlayer extends Player
         {
             public void handle(MouseEvent e)
             {
+                System.out.println("\n\n\t\tHBOX SIZE: " + getChildren().get(0).getBoundsInLocal().getHeight());
                 if (playActive)
                     return;
                 playActive = true;
