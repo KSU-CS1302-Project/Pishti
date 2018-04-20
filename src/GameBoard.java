@@ -113,7 +113,7 @@ public class GameBoard extends StackPane implements ActionObserver
         }
     }
 
-    private void moveCard(Card card, Node destination, Runnable callback, boolean doFlip)
+    private ParallelTransition moveCard(Card card, Node source, Node destination, Runnable callback, boolean doFlip)
     {
         // initialize transitions
         ParallelTransition rotateAndMove = new ParallelTransition();
@@ -138,7 +138,7 @@ public class GameBoard extends StackPane implements ActionObserver
 
         Line path = new Line();
         Card animatedCard = new Card(card);
-        Bounds cardBounds = getBoundsInAnimationLayer(card);
+        Bounds sourceBounds = (source == null ? getBoundsInAnimationLayer(card) : getBoundsInAnimationLayer(source));
         Bounds pileBounds = getBoundsInAnimationLayer(destination);
         double xOriginToCenter = animatedCard.getBoundsInLocal().getWidth() / 2;
         double yOriginToCenter = animatedCard.getBoundsInLocal().getHeight() / 2;
@@ -146,8 +146,8 @@ public class GameBoard extends StackPane implements ActionObserver
         // setup path transition
         m_animationLayer.getChildren().addAll(path, animatedCard);
         path.setStroke(Color.TRANSPARENT);
-        path.setStartX(cardBounds.getMinX() + xOriginToCenter);
-        path.setStartY(cardBounds.getMinY() + yOriginToCenter);
+        path.setStartX(sourceBounds.getMinX() + xOriginToCenter);
+        path.setStartY(sourceBounds.getMinY() + yOriginToCenter);
         path.setEndX(pileBounds.getMinX() - xOriginToCenter + m_pile.getBoundsInLocal().getWidth());
         path.setEndY(pileBounds.getMinY() + yOriginToCenter);
         pathTransition.setDuration(Duration.millis(1000));
@@ -194,13 +194,13 @@ public class GameBoard extends StackPane implements ActionObserver
         });
 
         card.setVisible(false);
-        rotateAndMove.play();
+        return rotateAndMove;
     }
 
     // card was played.  remove it from the hand of the player that played it, and notify other players.
     private void cardPlayed(Player playerOfCard, Card card)
     {
-        moveCard(card, m_pile, () -> {
+        moveCard(card, null, m_pile, () -> {
             if((m_pile.getTopCard() != null) && (card.getRank() == Rank.JACK)) {
                 System.out.println("Jack played");
                 m_pile.addCard(card);
