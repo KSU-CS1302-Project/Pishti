@@ -90,9 +90,13 @@ public class GameBoard extends StackPane implements ActionObserver
         }
 
         dealCards();
-        for (int i = 0; i < 4; i++) {
-        	m_pile.addCard(m_deck.draw());
-        }
+        prime();
+    }
+    
+    private void prime() {
+    	for (int i = 0; i < 4; i++) {
+    		m_pile.addCard(m_deck.draw());
+    	}
     }
 
     // gives each player an ArrayList containing 4 cards.
