@@ -230,7 +230,7 @@ public class GameBoard extends StackPane implements ActionObserver
                 System.out.println("Non-Jack Pishti found!");
                 m_pile.addCard(card);
                 System.out.println("Non-jack pishti added to stack");
-                addPointsToPlayer(playerOfCard, 10);
+                addPointsToPlayer(playerOfCard, 150);
                 System.out.println("10 points added");
                 m_pile.flush();
             }
@@ -302,10 +302,10 @@ public class GameBoard extends StackPane implements ActionObserver
         getChildren().remove(m_layout);
         m_layout = new BorderPane();
         getChildren().add(m_layout);
-        String humanString = m_pointsDisplay[0].getText().substring(5, 7);
-        int humanPoints = Integer.valueOf(humanString);
         String AIString = m_pointsDisplay[1].getText().substring(10, 12);
         int AIPoints = Integer.valueOf(AIString);
+        String humanString = m_pointsDisplay[0].getText().substring(5, 7);
+        int humanPoints = Integer.valueOf(humanString);
         if(humanPoints > AIPoints) {
     		m_layout.setCenter(new Text("Human Player Won!!\rCongratulations!"));
     	}
