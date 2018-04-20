@@ -275,7 +275,7 @@ public class GameBoard extends StackPane implements ActionObserver
             if (allPlayerHandsEmpty) { // deal new hand
                 int playersWithWinningPoints = 0;
                 for (Player p : m_playerQueue) {
-                    if (p.capturedPoints >= 151) {
+                    if (p.capturedPoints >= 1) {
                         ++playersWithWinningPoints;
                     }
                 }
@@ -302,15 +302,22 @@ public class GameBoard extends StackPane implements ActionObserver
         getChildren().remove(m_layout);
         m_layout = new BorderPane();
         getChildren().add(m_layout);
-        String AIString = m_pointsDisplay[1].getText().substring(10, 12);
-        int AIPoints = Integer.valueOf(AIString);
-        String humanString = m_pointsDisplay[0].getText().substring(5, 7);
-        int humanPoints = Integer.valueOf(humanString);
+        int AIPoints = 0;
+        int humanPoints = 0;
+        for (Player p : m_playerQueue) {
+            if (p instanceof HumanPlayer)
+                humanPoints = p.capturedPoints;
+            else
+                AIPoints = p.capturedPoints;
+        }
         if(humanPoints > AIPoints) {
     		m_layout.setCenter(new Text("Human Player Won!!\rCongratulations!"));
     	}
-        else {
+        else if (AIPoints > humanPoints){
         	m_layout.setCenter(new Text("Computer Player Won!!\rYou Lost!"));
+        }
+        else {
+            m_layout.setCenter(new Text("THE GAME DEVS SCREWED UP.  SO SUE THEM."));
         }
     }
 
