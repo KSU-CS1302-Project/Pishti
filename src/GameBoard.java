@@ -302,7 +302,16 @@ public class GameBoard extends StackPane implements ActionObserver
         getChildren().remove(m_layout);
         m_layout = new BorderPane();
         getChildren().add(m_layout);
-        m_layout.setCenter(new Text("PLAYER WON!"));
+        String humanString = m_pointsDisplay[0].getText().substring(5, 7);
+        int humanPoints = Integer.valueOf(humanString);
+        String AIString = m_pointsDisplay[1].getText().substring(10, 12);
+        int AIPoints = Integer.valueOf(AIString);
+        if(humanPoints > AIPoints) {
+    		m_layout.setCenter(new Text("Human Player Won!!\rCongratulations!"));
+    	}
+        else {
+        	m_layout.setCenter(new Text("Computer Player Won!!\rYou Lost!"));
+        }
     }
 
     private Bounds getBoundsInAnimationLayer(Node node) {
