@@ -8,6 +8,7 @@ import Players.AIPlayer;
 import Players.HumanPlayer;
 import Players.Player;
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.beans.value.ObservableIntegerValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -89,20 +90,29 @@ public class GameBoard extends StackPane implements ActionObserver
             player.m_subject.addObserver(this);
         }
 
-        dealCards();
-        prime();
+        Thread thread = new Thread(() -> {
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            Platform.runLater(() -> {
+                prime();
+                dealCards();
+            });
+        });
+        thread.start();
     }
     
     private void prime() {
-        //SequentialTransition sequence4Cards = new SequentialTransition();
-        //sequence4Cards.getChildren().addAll();
+        SequentialTransition sequence4Cards = new SequentialTransition();
+        sequence4Cards.getChildren().addAll();
     	for (int i = 0; i < 4; i++) {
-    		//m_pile.addCard(m_deck.draw());
     		Card card = m_deck.draw();
-    		m_pile.addCard(card);
-    		//sequence4Cards.getChildren().add(moveCard(card, m_deck, m_pile, () -> {m_pile.addCard(card);}, true));
+    		card.setFrontVisible(false);
+    		sequence4Cards.getChildren().add(moveCard(card, m_deck, m_pile, () -> {m_pile.addCard(card);}, true));
     	}
-    	//sequence4Cards.play();
+    	sequence4Cards.play();
     }
 
     // gives each player an ArrayList containing 4 cards.

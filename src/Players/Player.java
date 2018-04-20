@@ -26,6 +26,7 @@ public abstract class Player extends Group
         // for debugging, show border around Player in Scene
         HBox cardParent = new HBox();
         cardParent.setBorder(new Border(new BorderStroke(Paint.valueOf("blue"), BorderStrokeStyle.SOLID, null, null)));
+        cardParent.setPrefSize(670, 244);
         getChildren().add(cardParent);
         cardParent.setMinHeight(242.0); //set minimum height to height of card images. Change later from hardcoded value
     }
