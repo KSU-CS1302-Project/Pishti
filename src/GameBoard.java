@@ -119,12 +119,16 @@ public class GameBoard extends StackPane implements ActionObserver
     private void dealCards()
     {
         int remainingCards = m_deck.remainingCards();
+        //SequentialTransition sequence = new SequentialTransition();
         for (Player player : m_playerQueue) {
             ArrayList<Card> playerHand = new ArrayList<>();
             for (int i = 0; i < Math.min(4, remainingCards / 2); ++i) {
                 Card card = m_deck.draw();
                 playerHand.add(card);
+                //ParallelTransition transition = moveCard(card, m_deck, player, () -> {}, true);
+                //sequence.getChildren().add(transition);
             }
+            //sequence.play();
             player.dealHand(playerHand);
         }
     }
