@@ -290,6 +290,7 @@ public class GameBoard extends StackPane implements ActionObserver
                     }
                     m_deck = new Deck();
                     dealCards();
+                    prime();
                 }
             }
         }, playerOfCard instanceof AIPlayer);
