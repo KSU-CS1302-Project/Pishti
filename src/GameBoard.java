@@ -94,9 +94,15 @@ public class GameBoard extends StackPane implements ActionObserver
     }
     
     private void prime() {
+        //SequentialTransition sequence4Cards = new SequentialTransition();
+        //sequence4Cards.getChildren().addAll();
     	for (int i = 0; i < 4; i++) {
-    		m_pile.addCard(m_deck.draw());
+    		//m_pile.addCard(m_deck.draw());
+    		Card card = m_deck.draw();
+    		m_pile.addCard(card);
+    		//sequence4Cards.getChildren().add(moveCard(card, m_deck, m_pile, () -> {m_pile.addCard(card);}, true));
     	}
+    	//sequence4Cards.play();
     }
 
     // gives each player an ArrayList containing 4 cards.
@@ -293,7 +299,7 @@ public class GameBoard extends StackPane implements ActionObserver
                     prime();
                 }
             }
-        }, playerOfCard instanceof AIPlayer);
+        }, playerOfCard instanceof AIPlayer).play();
     }
 
     private void endGame()
