@@ -250,7 +250,7 @@ public class GameBoard extends StackPane implements ActionObserver
                 System.out.println("Non-Jack Pishti found!");
                 m_pile.addCard(card);
                 System.out.println("Non-jack pishti added to stack");
-                addPointsToPlayer(playerOfCard, 150);
+                addPointsToPlayer(playerOfCard, 10);
                 System.out.println("10 points added");
                 m_pile.flush();
             }
@@ -295,7 +295,7 @@ public class GameBoard extends StackPane implements ActionObserver
             if (allPlayerHandsEmpty) { // deal new hand
                 int playersWithWinningPoints = 0;
                 for (Player p : m_playerQueue) {
-                    if (p.capturedPoints >= 1) {
+                    if (p.capturedPoints >= 151) {
                         ++playersWithWinningPoints;
                     }
                 }
